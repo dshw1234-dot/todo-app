@@ -3,16 +3,17 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-    <meta name="theme-color" content="#1c1c1c" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#faf9f8" media="(prefers-color-scheme: light)" />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./icon-192.png" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <!-- black-translucent 이면 iOS 26 이 화면 맨 위에 어두운 그라데이션을 덮는다 → 상태 표시줄 아래부터 그리기 -->
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <!-- apple-mobile-web-app-status-bar-style 은 넣지 않는다: iOS 26.1+ 는 black-translucent 위에 어두운 막을 직접 그리고(끌 수 없음),
+         Apple 권고(WebKit 317153)는 이 태그를 빼서 상태 표시줄이 페이지 색을 따르게 하는 것. 홈 화면에 다시 추가해야 적용됨 -->
     <title>할 일</title>
-    <script type="module" crossorigin src="./assets/index-C5B5UA7F.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-DqHu0nK7.css">
+    <script type="module" crossorigin src="./assets/index-D5tvD-Fo.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-FlFAMSKq.css">
   </head>
   <body>
     <div id="app"></div>
