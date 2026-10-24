@@ -7,8 +7,10 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
+  // 화면(index.html)은 HTTP 캐시를 거치지 않고 서버에 확인한다: GitHub Pages 가 max-age=600 을 보내
+  // 배포 뒤 10분 동안은 앱을 다시 열어도 옛 판이 떴다(2026-10-24). 해시가 붙은 js·css 는 그대로.
   e.respondWith(
-    fetch(req).then(res => {
+    fetch(req, req.mode === 'navigate' ? { cache: 'no-cache' } : undefined).then(res => {
       const copy = res.clone();
       caches.open(CACHE).then(c => c.put(req, copy));
       return res;
