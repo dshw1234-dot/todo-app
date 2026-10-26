@@ -1,5 +1,5 @@
 // 원격 통로 동의 화면(아이폰_통로_설계.md 2장, 7장 3번). Supabase Auth 의 OAuth 2.1 서버가 Claude 의 로그인 요청을
-// 이 페이지로 보낸다(?authorization_id=…). 여기서 할 일 앱 계정으로 로그인 → 요청 내용 보기 → 허용/거절.
+// 이 페이지로 보낸다(?authorization_id=…). 여기서 체크봇 계정으로 로그인 → 요청 내용 보기 → 허용/거절.
 // supabase-js 없이 fetch 만 쓴다(앱의 src/data/supa.js 와 같은 방식). 호출 주소는 supabase-js(auth-js 2.118)의
 // getAuthorizationDetails·approveAuthorization·denyAuthorization 과 같다.
 //

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex">
-<title>할 일 앱 연결 허용</title>
+<title>체크봇 연결 허용</title>
 <!-- 원격 통로 동의 화면(docs/명세/아이폰_통로_설계.md 2장). 앱 화면(src/ui)과 따로 둔 한 장짜리 페이지. 동작은 consent.js -->
 <style>
   :root { --bg: #f5f5f5; --card: #fff; --fg: #1f1f1f; --sub: #616161; --line: #e0e0e0; --accent: #2564cf; --warn: #a4262c; --warn-bg: #fde7e9; --ok-bg: #e8f1fc; --on-accent: #fff; }
@@ -38,12 +38,12 @@
 <main>
   <section data-step="none" hidden>
     <h1>잘못된 주소</h1>
-    <p>이 페이지는 Claude 에서 '할 일 앱' 커넥터를 연결할 때 자동으로 열립니다. 주소에 연결 요청 번호가 없습니다.</p>
+    <p>이 페이지는 Claude 에서 '체크봇' 커넥터를 연결할 때 자동으로 열립니다. 주소에 연결 요청 번호가 없습니다.</p>
   </section>
 
   <section data-step="login">
-    <h1>할 일 앱 로그인</h1>
-    <p class="sub">Claude 가 할 일 앱에 연결하려고 합니다. 먼저 할 일 앱 계정으로 로그인해 주세요(앱과 같은 이메일·비밀번호).</p>
+    <h1>체크봇 로그인</h1>
+    <p class="sub">Claude 가 체크봇에 연결하려고 합니다. 먼저 체크봇 계정으로 로그인해 주세요(앱과 같은 이메일·비밀번호).</p>
     <form id="login-form">
       <label for="email">이메일</label>
       <input id="email" type="email" autocomplete="username" required>
@@ -58,7 +58,7 @@
   </section>
 
   <section data-step="ask" hidden>
-    <h1><span id="client"></span>이(가) 할 일 앱에 접근하려 합니다</h1>
+    <h1><span id="client"></span>이(가) 체크봇에 접근하려 합니다</h1>
     <p class="sub">로그인: <span id="who"></span></p>
     <div id="host-box" class="host">
       <span class="sub">허용하면 돌아갈 곳</span>
