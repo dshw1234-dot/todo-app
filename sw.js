@@ -1,5 +1,5 @@
 // 앱 껍데기만 캐시한다(데이터는 IndexedDB). 새 버전은 다음 실행 때 반영.
-const CACHE = 'todo-shell-b20cc3d'; // 빌드 때 vite.config.js 가 판 번호로 바꾼다. 판이 바뀌면 옛 캐시를 버린다
+const CACHE = 'todo-shell-536ef3c'; // 빌드 때 vite.config.js 가 판 번호로 바꾼다. 판이 바뀌면 옛 캐시를 버린다
 self.addEventListener('install', e => { self.skipWaiting(); });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
