@@ -1,5 +1,5 @@
 // 앱 껍데기만 캐시한다(데이터는 IndexedDB). 새 버전은 다음 실행 때 반영.
-const CACHE = 'todo-shell-598ce01'; // 빌드 때 vite.config.js 가 판 번호로 바꾼다. 판이 바뀌면 옛 캐시를 버린다
+const CACHE = 'todo-shell-961c917'; // 빌드 때 vite.config.js 가 판 번호로 바꾼다. 판이 바뀌면 옛 캐시를 버린다
 self.addEventListener('install', e => { self.skipWaiting(); });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
@@ -14,6 +14,11 @@ self.addEventListener('notificationclick', e => {
 });
 // 진단(X-02): 이 주소로 열려 있는 창 목록(같은 저장소를 쓰는 다른 창·옛 탭이 DB 를 붙잡는지 보려고)
 self.addEventListener('message', e => {
+  // 새로 열린 창이 부른다: 다른 창(옛 판 코드일 수 있음)을 새로고침해 새 코드로 띄운다. 뒤에 있으면 새 코드가 바로 물러난다(data/single.js)
+  if (e.data?.type === 'reload-others') {
+    e.waitUntil(self.clients.matchAll({ type: 'window' }).then(cs => Promise.all(cs.filter(c => c.id !== e.source?.id).map(c => c.navigate(c.url).catch(() => {})))));
+    return;
+  }
   if (e.data?.type !== 'clients') return;
   e.waitUntil(self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(cs => e.source?.postMessage({
     type: 'clients', list: cs.map(c => ({ id: c.id.slice(0, 8), url: c.url.replace(self.registration.scope, '/'), vis: c.visibilityState, focused: c.focused, me: c.id === e.source?.id })),
