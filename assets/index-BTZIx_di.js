@@ -1,1 +1,0 @@
-import{invoke as a}from"./core-b35iMLeV.js";async function t(){return await a("plugin:autostart|is_enabled")}async function i(){await a("plugin:autostart|enable")}async function e(){await a("plugin:autostart|disable")}export{e as disable,i as enable,t as isEnabled};
