@@ -1,5 +1,5 @@
 // 앱 껍데기만 캐시한다(데이터는 IndexedDB). 새 버전은 다음 실행 때 반영.
-const CACHE = 'todo-shell-a21d8cb'; // 빌드 때 vite.config.js 가 판 번호로 바꾼다. 판이 바뀌면 옛 캐시를 버린다
+const CACHE = 'todo-shell-2d7871a'; // 빌드 때 vite.config.js 가 판 번호로 바꾼다. 판이 바뀌면 옛 캐시를 버린다
 self.addEventListener('install', e => { self.skipWaiting(); });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
@@ -33,8 +33,8 @@ self.addEventListener('fetch', e => {
   // 배포 뒤 10분 동안은 앱을 다시 열어도 옛 판이 떴다(2026-10-24). 해시가 붙은 js·css 는 그대로.
   e.respondWith(
     fetch(req, req.mode === 'navigate' ? { cache: 'no-cache' } : undefined).then(res => {
-      const copy = res.clone();
-      caches.open(CACHE).then(c => c.put(req, copy));
+      // 오류 응답(404·5xx)은 담지 않는다: 담으면 오프라인 대체로 쓰는 화면이 오류 쪽으로 바뀐다(2026-10-30 점검)
+      if (res.ok) { const copy = res.clone(); caches.open(CACHE).then(c => c.put(req, copy)); }
       return res;
     }).catch(() => caches.match(req).then(r => r || caches.match(self.registration.scope)))
   );
