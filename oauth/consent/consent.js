@@ -1,4 +1,4 @@
-// 원격 통로 동의 화면(아이폰_통로_설계.md 2장, 7장 3번). Supabase Auth 의 OAuth 2.1 서버가 Claude 의 로그인 요청을
+// 원격 통로 동의 화면(아이폰_통로_설계.md 2장, 7장 3번). Supabase Auth 의 OAuth 2.1 서버가 AI 앱(Claude·ChatGPT 등)의 로그인 요청을
 // 이 페이지로 보낸다(?authorization_id=…). 여기서 체크봇 계정으로 로그인 → 요청 내용 보기 → 허용/거절.
 // supabase-js 없이 fetch 만 쓴다(앱의 src/data/supa.js 와 같은 방식). 호출 주소는 supabase-js(auth-js 2.118)의
 // getAuthorizationDetails·approveAuthorization·denyAuthorization 과 같다.
@@ -34,7 +34,7 @@ export async function signIn(email, password, f = fetch) {
 export async function getDetails(id, token, f = fetch) {
   const r = await f(`${SERVER.url}/auth/v1/oauth/authorizations/${encodeURIComponent(id)}`, { headers: headers(token) });
   const j = await r.json().catch(() => ({}));
-  if (!r.ok) throw new Error(message(j) || `요청을 읽지 못했습니다(${r.status}). 만료됐으면 Claude 에서 연결을 다시 시작해 주세요.`);
+  if (!r.ok) throw new Error(message(j) || `요청을 읽지 못했습니다(${r.status}). 만료됐으면 연결하던 앱에서 연결을 다시 시작해 주세요.`);
   return j;
 }
 
@@ -47,13 +47,15 @@ export async function decide(id, action, token, f = fetch) {
   return j;
 }
 
-// 돌아갈 곳 설명: 호스트를 크게 보여 주고, claude.ai 가 아니면 경고(MCP 규격: 돌아갈 주소의 호스트를 분명히)
+// 돌아갈 곳 설명: 호스트를 크게 보여 주고, 아는 앱(https 의 그 호스트 그대로)이 아니면 경고(MCP 규격: 돌아갈 주소의 호스트를 분명히)
+// chatgpt.com(#42): 문서상 /connector_platform_oauth_redirect 또는 /connector/oauth/{id}. 실제로 쓰는 꼴은 확인 안 됨이라 호스트만 본다
+const KNOWN = { 'claude.ai': 'Claude(웹·데스크톱·모바일 앱)의 커넥터 연결입니다.', 'chatgpt.com': 'ChatGPT(웹·모바일 앱)의 앱 연결입니다.' };
 export function describeRedirect(uri) {
   let u;
   try { u = new URL(uri); } catch { return { host: String(uri || '?'), level: 'bad', note: '돌아갈 주소를 읽을 수 없습니다. 거절하세요.' }; }
-  if (u.protocol === 'https:' && u.hostname === 'claude.ai') return { host: u.hostname, level: 'ok', note: 'Claude(웹·데스크톱·모바일 앱)의 커넥터 연결입니다.' };
-  if (u.protocol === 'http:' && ['localhost', '127.0.0.1'].includes(u.hostname)) return { host: u.host, level: 'warn', note: '이 컴퓨터 안의 프로그램(예: Claude Code)입니다. 지금 직접 연결을 시작한 게 아니면 거절하세요.' };
-  return { host: u.host, level: 'warn', note: 'claude.ai 가 아닌 곳입니다. 직접 연결한 것이 아니면 거절하세요.' };
+  if (u.protocol === 'https:' && Object.hasOwn(KNOWN, u.hostname)) return { host: u.hostname, level: 'ok', note: KNOWN[u.hostname] };
+  if (u.protocol === 'http:' && ['localhost', '127.0.0.1'].includes(u.hostname)) return { host: u.host, level: 'warn', note: '이 컴퓨터 안의 프로그램(예: Claude Code, Codex 등)입니다. 아무 프로그램이나 쓸 수 있는 주소라, 지금 직접 연결을 시작한 게 아니면 거절하세요.' };
+  return { host: u.host, level: 'warn', note: `잘 아는 앱(${Object.keys(KNOWN).join('·')})이 아닌 곳입니다. 직접 연결한 것이 아니면 거절하세요.` };
 }
 
 // 돌아가기: http(s) 주소만(다른 스킴으로 튀지 않게)
@@ -77,7 +79,10 @@ function start() {
     const d = await getDetails(id, token);
     if (!d.authorization_id && d.redirect_url) { go(d.redirect_url); return; } // 이미 허용함
     const r = describeRedirect(d.redirect_uri);
-    $('client').textContent = d.client?.name || d.client?.client_name || '이름 없는 앱';
+    const name = d.client?.name || d.client?.client_name || '이름 없는 앱';
+    $('client').textContent = name;
+    const store = $('client-store'); // Pages 캐시로 옛 index.html(이 칸 없음)과 섞여도 멈추지 않게
+    if (store) store.textContent = name;
     $('host').textContent = r.host;
     $('host-note').textContent = r.note;
     $('host-box').dataset.level = r.level;
