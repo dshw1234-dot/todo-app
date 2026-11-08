@@ -11,6 +11,9 @@ export const SERVER = {
   url: 'https://yzldtywsqlhnunluayyc.supabase.co',
   key: 'sb_publishable_gO1FKK1yvQ2kMqtJO7n_0A_3PQBNKFc',
 };
+// 확인 상자(Cloudflare Turnstile) 공개 사이트 키. src/data/config.js 의 CAPTCHA_SITE_KEY 와 같은 값(같은지는 같은 시험이 본다).
+// Supabase 에서 확인 상자를 켜면 비밀번호 로그인에도 표가 필요하다(입구 설계 3-1절 ⑦). 비어 있으면 그리지 않는다
+export const CAPTCHA_SITE_KEY = '';
 
 const headers = (token, extra = {}) => ({
   apikey: SERVER.key, 'Content-Type': 'application/json', 'X-Supabase-Api-Version': '2024-01-01',
@@ -18,9 +21,10 @@ const headers = (token, extra = {}) => ({
 });
 const message = j => j.msg || j.error_description || j.message || j.error || '';
 
-// 이메일·비밀번호 로그인(앱과 같은 /auth/v1/token?grant_type=password). 토큰만 돌려준다
-export async function signIn(email, password, f = fetch) {
-  const r = await f(`${SERVER.url}/auth/v1/token?grant_type=password`, { method: 'POST', headers: headers(null), body: JSON.stringify({ email, password }) });
+// 이메일·비밀번호 로그인(앱과 같은 /auth/v1/token?grant_type=password). 토큰만 돌려준다. captcha = 확인 상자 표(없으면 안 보냄)
+export async function signIn(email, password, f = fetch, captcha = '') {
+  const body = captcha ? { email, password, gotrue_meta_security: { captcha_token: captcha } } : { email, password };
+  const r = await f(`${SERVER.url}/auth/v1/token?grant_type=password`, { method: 'POST', headers: headers(null), body: JSON.stringify(body) });
   const j = await r.json().catch(() => ({}));
   if (!r.ok || !j.access_token) {
     const code = j.error_code || j.code || '';
@@ -73,6 +77,16 @@ function start() {
   if (!id) { show('none'); return; }
   show('login');
 
+  // 확인 상자: 표는 한 번만 쓰이니 로그인을 보낼 때마다 새로 받는다(reset)
+  let captcha = '', widget = null;
+  if (CAPTCHA_SITE_KEY) {
+    const s = document.createElement('script');
+    s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    s.onload = () => { widget = window.turnstile.render($('captcha'), { sitekey: CAPTCHA_SITE_KEY, language: 'ko', callback: t => { captcha = t; }, 'expired-callback': () => { captcha = ''; } }); };
+    s.onerror = () => fail('확인 상자를 불러오지 못했습니다. 인터넷 연결을 봐 주세요.');
+    document.head.appendChild(s);
+  }
+
   async function load() {
     fail('');
     show('wait');
@@ -92,15 +106,19 @@ function start() {
 
   $('login-form').addEventListener('submit', async e => {
     e.preventDefault();
+    if (CAPTCHA_SITE_KEY && !captcha) { fail('사람 확인 상자를 먼저 눌러 주세요.'); return; }
     const btn = $('login-btn');
     btn.disabled = true;
     try {
-      const s = await signIn($('email').value.trim(), $('password').value);
+      const s = await signIn($('email').value.trim(), $('password').value, fetch, captcha);
       token = s.token;
       $('password').value = '';
       $('who').textContent = s.email;
       await load();
-    } catch (err) { show('login'); fail(err.message); } finally { btn.disabled = false; }
+    } catch (err) { show('login'); fail(err.message); } finally {
+      btn.disabled = false;
+      if (widget !== null) { captcha = ''; window.turnstile.reset(widget); }
+    }
   });
   for (const [btnId, action] of [['approve', 'approve'], ['deny', 'deny']]) {
     $(btnId).addEventListener('click', async () => {
