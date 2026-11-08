@@ -12,8 +12,8 @@ export const SERVER = {
   key: 'sb_publishable_gO1FKK1yvQ2kMqtJO7n_0A_3PQBNKFc',
 };
 // 확인 상자(Cloudflare Turnstile) 공개 사이트 키. src/data/config.js 의 CAPTCHA_SITE_KEY 와 같은 값(같은지는 같은 시험이 본다).
-// Supabase 에서 확인 상자를 켜면 비밀번호 로그인에도 표가 필요하다(입구 설계 3-1절 ⑦). 비어 있으면 그리지 않는다
-export const CAPTCHA_SITE_KEY = '';
+// Supabase 에서 확인 상자를 켜면 비밀번호 로그인에도 표가 필요하다(입구 설계 3-1절 ⑦). 비어 있으면 그리지 않는다. 개발 서버는 시험 키(늘 통과)
+export const CAPTCHA_SITE_KEY = /^(localhost|127\.0\.0\.1)$/.test(globalThis.location?.hostname) ? '1x00000000000000000000AA' : '0x4AAAAAAF4bxCw-JCQNuJHA';
 
 const headers = (token, extra = {}) => ({
   apikey: SERVER.key, 'Content-Type': 'application/json', 'X-Supabase-Api-Version': '2024-01-01',
