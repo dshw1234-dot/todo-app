@@ -7,8 +7,8 @@ export const SERVER = {
   url: 'https://yzldtywsqlhnunluayyc.supabase.co',
   key: 'sb_publishable_gO1FKK1yvQ2kMqtJO7n_0A_3PQBNKFc',
 };
-// 문의·삭제 요청을 받을 주소. 비어 있으면 그 줄을 그리지 않는다(공개할 주소는 운영자가 정한다)
-export const CONTACT = '';
+// 문의·삭제 요청을 받을 주소. 비어 있으면 그 줄을 그리지 않는다(공개할 주소는 운영자가 정한다, 2026-11-10 사용자가 넣으라고 함)
+export const CONTACT = 'dshw1234@gmail.com';
 
 export const cleanSrc = s => (/^[a-z0-9_-]{1,16}$/.test(String(s || '').toLowerCase()) ? String(s).toLowerCase() : '');
 export const validEmail = s => s.length <= 254 && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s);
