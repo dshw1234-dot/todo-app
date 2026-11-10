@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checkbot — a to-do app that puts your AI to work</title>
+<meta name="description" content="Still copying your to-dos into an AI chat? Checkbot is a to-do app that puts your AI to work. Join the waitlist for launch news and an early-access invite.">
+<link rel="canonical" href="https://dshw1234-dot.github.io/todo-app/waitlist/">
+<link rel="alternate" hreflang="en" href="https://dshw1234-dot.github.io/todo-app/waitlist/">
+<link rel="alternate" hreflang="ko" href="https://dshw1234-dot.github.io/todo-app/waitlist/ko/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Still copying your to-dos into an AI chat?">
+<meta property="og:description" content="Checkbot is a to-do app that puts your AI to work. Write a task, hand it off, and see progress and results right in the task.">
+<meta property="og:url" content="https://dshw1234-dot.github.io/todo-app/waitlist/">
+<meta property="og:image" content="https://dshw1234-dot.github.io/todo-app/waitlist/og-en.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="waitlist.css">
+<script type="module" src="waitlist.js"></script>
+</head>
+<body>
+<header class="top">
+  <span class="brand"><img src="../icon.svg" alt="" width="28" height="28">Checkbot</span>
+  <a class="lang" href="ko/" hreflang="ko" lang="ko" data-keep-src>한국어</a>
+</header>
+
+<main>
+<section class="hero">
+  <div class="hero-text">
+    <h1>Still copying your to-dos <span class="nb">into an AI chat?</span></h1>
+    <p class="sub">Checkbot is a to-do app that puts your AI to work. Write a task, hand it off, and see progress and results right in the task.</p>
+    <p class="ais">Works with the AI you already use: Claude, ChatGPT, or a local model.</p>
+
+    <form id="join" class="join" novalidate data-bad="Please check the email address." data-fail="Couldn't sign you up. Please try again in a moment.">
+      <label for="email">Email</label>
+      <div class="join-row">
+        <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required>
+        <button type="submit">Join the waitlist</button>
+      </div>
+      <input class="hp" name="company" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <p class="note">You'll get launch news and an early-access invite. No other email. <a href="#privacy">Privacy</a></p>
+      <p role="status" class="msg"></p>
+    </form>
+
+    <div id="thanks" class="thanks" hidden>
+      <h2 tabindex="-1">You're on the list</h2>
+      <p>Launch news and your early-access invite will go to that address.</p>
+      <form id="survey" class="survey" data-fail="Couldn't send that. Please try again.">
+        <p class="survey-lead">A few optional questions. You're already signed up, so feel free to skip.</p>
+        <fieldset>
+          <legend>Which AI do you pay for? (pick any)</legend>
+          <div class="chips">
+            <label><input type="checkbox" name="ai" value="claude"><span>Claude</span></label>
+            <label><input type="checkbox" name="ai" value="chatgpt"><span>ChatGPT</span></label>
+            <label><input type="checkbox" name="ai" value="gemini"><span>Gemini</span></label>
+            <label><input type="checkbox" name="ai" value="grok"><span>Grok</span></label>
+            <label><input type="checkbox" name="ai" value="deepseek"><span>DeepSeek</span></label>
+            <label><input type="checkbox" name="ai" value="kimi"><span>Kimi</span></label>
+            <label><input type="checkbox" name="ai" value="local"><span>Local model</span></label>
+            <label><input type="checkbox" name="ai" value="none"><span>None</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>What's the biggest hassle? (pick one)</legend>
+          <div class="chips col">
+            <label><input type="radio" name="pain" value="organize"><span>Writing down and organizing to-dos</span></label>
+            <label><input type="radio" name="pain" value="pileup"><span>Tasks for AI keep piling up</span></label>
+            <label><input type="radio" name="pain" value="carry"><span>Copying tasks into AI and checking the results</span></label>
+            <label><input type="radio" name="pain" value="away"><span>Handing off a task when I'm away from my desk</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Are you a developer?</legend>
+          <div class="chips">
+            <label><input type="radio" name="dev" value="yes"><span>Yes</span></label>
+            <label><input type="radio" name="dev" value="no"><span>No</span></label>
+          </div>
+        </fieldset>
+        <label class="line" for="task">One task you'd hand off first</label>
+        <input id="task" name="task" type="text" maxlength="200" placeholder="e.g. Draft the Monday meeting notes">
+        <div class="survey-btns">
+          <button type="submit">Send</button>
+          <button type="button" id="survey-skip" class="ghost">Skip</button>
+        </div>
+        <p role="status" class="msg"></p>
+      </form>
+      <p id="survey-done" class="survey-done" hidden>Thank you. This goes straight into what gets built.</p>
+    </div>
+  </div>
+
+  <div class="demo" data-demo data-step="5" role="img" aria-label="Demo: you write a to-do on your phone and hand it to Checkbot; your AI does the work and the result comes back to that to-do.">
+    <figure class="shot phone" aria-hidden="true">
+      <div class="shot-screen">
+        <div class="ph-head">My Day</div>
+        <div class="rows">
+          <div class="row new">
+            <i class="circle"></i>
+            <div><b>Compare pricing of 3 rival apps in a table</b><span class="meta">Tasks<span class="st st-req"> · Run requested</span><span class="st st-run"> · Running</span><span class="st st-done"> · Result ready</span></span></div>
+          </div>
+          <div class="row">
+            <i class="circle"></i>
+            <div><b>Buy milk</b><span class="meta">Tasks</span></div>
+          </div>
+        </div>
+        <div class="addbar"><span class="plus">+</span><span class="typed" data-type="Compare pricing of 3 rival apps in a table"></span><span class="ph">Add a task</span></div>
+      </div>
+      <figcaption>1. Jot it down on your phone</figcaption>
+    </figure>
+    <figure class="shot card" aria-hidden="true">
+      <div class="shot-screen">
+        <div class="card-body">
+          <div class="card-title"><i class="circle"></i><b>Compare pricing of 3 rival apps in a table</b></div>
+          <div class="seg"><span class="seg-me">Me</span><span class="seg-bot">Checkbot</span></div>
+          <div class="state">
+            <span class="st st-req">Run requested</span>
+            <span class="st st-run">Running <em>reading pricing pages</em></span>
+            <span class="st st-done">Result ready <em>just now</em></span>
+          </div>
+          <div class="result">
+            <div class="result-h">Result</div>
+            <p><strong>Summary:</strong> all three have a free tier; paid plans run $3–5 a month.</p>
+            <table>
+              <tr><th>App</th><th>Free</th><th>Paid</th></tr>
+              <tr><td>A</td><td>5 lists</td><td>$4/mo</td></tr>
+              <tr><td>B</td><td>9 lists</td><td>$3/mo</td></tr>
+              <tr><td>C</td><td>1 device</td><td>$5/mo</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <figcaption>2. Hand it off; the result lands in the task</figcaption>
+    </figure>
+    <p class="demo-note">Simplified from the app in development.</p>
+  </div>
+</section>
+
+<section class="band">
+  <h2>Three things it does first</h2>
+  <ol class="three">
+    <li><h3>Capture it the moment it comes up</h3><p>Add a to-do from your phone in seconds. No need to hold it in your head until you're back at your desk.</p></li>
+    <li><h3>Hand it off in one line</h3><p>No new chat to open, no folder or model to pick, no long prompt to rewrite. The to-do you wrote is the brief.</p></li>
+    <li><h3>Progress and results, in the task</h3><p>Each task shows where the work stands, and the result comes back to the same task. No digging through chat history.</p></li>
+  </ol>
+</section>
+
+<section class="band">
+  <h2>From to-do to done, in one place</h2>
+  <ol class="steps">
+    <li><b>Write it down</b><span>Add to-dos from your phone or PC, the way you would in any to-do app.</span></li>
+    <li><b>Hand it off</b><span>For work you'd give to AI, switch the task to Checkbot and request a run.</span></li>
+    <li><b>Your AI does the work</b><span>Checkbot passes the task to the AI app on your PC. The actual work is done by the AI you already use.</span></li>
+    <li><b>Review and check it off</b><span>When the result comes back to the task, read it and tick it off. Not quite right? Add a note and hand it off again.</span></li>
+  </ol>
+</section>
+
+<section class="band faq">
+  <h2>Questions</h2>
+  <details open>
+    <summary>Can't I do this with the Claude or ChatGPT app?</summary>
+    <p>You can. But you copy the task over, explain it again, and later dig the result out of a chat. The AI does the work; Checkbot keeps track of it. It organizes your to-dos, hands them to your AI, shows where each one stands, and collects the result in the task.</p>
+  </details>
+  <details>
+    <summary>Do I pay Checkbot for AI usage?</summary>
+    <p>No. Checkbot runs the AI you already use and doesn't resell AI. Checkbot's own pricing isn't set yet; the to-do list features are planned to be free.</p>
+  </details>
+  <details>
+    <summary>What do I need?</summary>
+    <p>For now, a Windows PC and your phone. Checkbot passes tasks to the AI app installed on your PC, so tasks run while the PC is on. From your phone (iPhone or Android) you add tasks, hand them off, and read the results.</p>
+  </details>
+  <details>
+    <summary>When can I try it?</summary>
+    <p>Early-access invites go out by email in the order people joined the waitlist.</p>
+  </details>
+</section>
+
+<section class="band cta">
+  <h2>Stop copying your to-dos. Hand them off.</h2>
+  <a class="btn" href="#join">Join the waitlist</a>
+</section>
+
+<section class="band privacy" id="privacy">
+  <h2>Privacy</h2>
+  <ul>
+    <li><b>What's collected</b> Your email address (required) and the answers you choose to give after signing up (optional).</li>
+    <li><b>What it's for</b> Sending launch news and early-access invites, and understanding who wants this. Never ads, never sold.</li>
+    <li><b>Where it's kept</b> The Checkbot operator's Supabase server (Seoul, South Korea).</li>
+    <li><b>How long</b> Until the launch announcement has gone out, and no longer than two years after you sign up. You can remove yourself below at any time.</li>
+    <li><b>Visit counts</b> Only daily totals. No cookies and no trackers; your browser keeps a single "been here before" flag.</li>
+    <li>Signing up is optional and the page works the same without it. By signing up you agree to the above.</li>
+    <li data-contact hidden><b>Contact</b> <a href="#privacy"></a></li>
+  </ul>
+  <form id="leave" class="leave" novalidate data-bad="Please check the email address." data-fail="That didn't go through. Please try again in a moment." data-ok="If that address was on the list, it has been removed.">
+    <label for="leave-email">Remove me from the list</label>
+    <div class="join-row">
+      <input id="leave-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="The email you signed up with">
+      <button type="submit" class="ghost">Remove</button>
+    </div>
+    <p role="status" class="msg"></p>
+  </form>
+</section>
+</main>
+
+<footer class="foot">Checkbot · built by a solo developer</footer>
+</body>
+</html>
