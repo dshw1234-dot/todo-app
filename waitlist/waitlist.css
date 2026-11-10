@@ -31,7 +31,7 @@ a { color: var(--accent); }
 .lang { font-size: 14px; text-decoration: none; padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; }
 
 .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: center; padding: 28px 0 64px; }
-h1 { margin: 0 0 16px; font-size: clamp(30px, 4.6vw, 46px); line-height: 1.22; letter-spacing: -.02em; }
+h1 { margin: 0 0 16px; font-size: clamp(30px, 4.6vw, 46px); line-height: 1.22; letter-spacing: -.02em; text-wrap: balance; }
 .sub { margin: 0 0 12px; font-size: 18px; color: var(--sub); }
 .ais { margin: 0 0 24px; font-size: 15px; font-weight: 600; color: var(--accent); }
 
